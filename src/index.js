@@ -1,22 +1,47 @@
 import './css/styles.css';
-// import pokemonCardTpl from './templates/pokemon-card.hbs';
+// import Notiflix from 'notiflix';
 
-// const DEBOUNCE_DELAY = 300;
+import countryCardTpl from './templates/country-card.hbs';
 
-// const ref = {
-//   cardContainer: document.querySelector('.js-card-container'),
-// };
+const DEBOUNCE_DELAY = 300;
 
-// function fetchPokemon(searchQuery) {
-//   fetch('https://pokeapi.co/api/v2/pokemon/98/')
-//     .then(response => {
-//       return response.json();
-//     })
-//     .then(renderPokemonCard)
-//     .catch(error => {
-//       console.log(error);
-//     });
-// }
+const ref = {
+  inputCountry: document.querySelector('#search-box'),
+  countryInfoContainer: document.querySelector('.country-info'),
+};
+
+function fetchCountries(name) {
+  fetch(`https://restcountries.com/v2/name/${name}`)
+    .then(response => {
+      // console.log(response);
+      return response.json();
+    })
+    .then(renderCountryCard)
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+function renderCountryCard(country) {
+  const markup = countryCardTpl(country);
+  console.log(country);
+  ref.countryInfoContainer.innerHTML = markup;
+}
+
+// ref.inputCountry.addEventListener(
+//   'input',
+//   _.debounce(event => {
+//     const name = event.currentTarget.value;
+//     console.log(name);
+//     fetchCountries(name);
+//   }, DEBOUNCE_DELAY),
+// );
+
+ref.inputCountry.addEventListener('input', event => {
+  const name = event.currentTarget.value;
+  console.log(name);
+  fetchCountries(name);
+});
 
 // function renderPokemonCard(pokemon) {
 //   const markup = pokemonCardTpl(pokemon);
@@ -26,34 +51,35 @@ import './css/styles.css';
 /// ...........example ......... /////
 
 // import './css/common.css';
-import pokemonCardTpl from './templates/pokemon-card.hbs';
-import API from './js/api-service';
-import getRefs from './js/get-refs';
+// import pokemonCardTpl from './templates/pokemon-card.hbs';
+// import API from './js/api-service';
+// import getRefs from './js/get-refs';
 
-const refs = getRefs();
+// const refs = getRefs();
 
-refs.searchForm.addEventListener('submit', onSearch);
+// refs.searchForm.addEventListener('submit', onSearch);
 
-function onSearch(e) {
-  e.preventDefault();
+// function onSearch(e) {
+//   e.preventDefault();
 
-  const form = e.currentTarget;
-  const searchQuery = form.elements.query.value;
+//   const form = e.currentTarget;
+//   const searchQuery = form.elements.query.value;
 
-  API.fetchPokemon(searchQuery)
-    .then(renderPokemonCard)
-    .catch(onFetchError)
-    .finally(() => form.reset());
-}
+//   API.fetchPokemon(searchQuery)
+//     .then(renderPokemonCard)
+//     .catch(onFetchError)
+//     .finally(() => form.reset());
+// }
 
-function renderPokemonCard(pokemon) {
-  const markup = pokemonCardTpl(pokemon);
-  refs.cardContainer.innerHTML = markup;
-}
+// function renderPokemonCard(pokemon) {
+//   const markup = pokemonCardTpl(pokemon);
+//   refs.cardContainer.innerHTML = markup;
+//   // Notiflix.Notify.success('Sol lucet omnibus');
+// }
 
-function onFetchError(error) {
-  alert('Упс, что-то пошло не так и мы не нашли вашего покемона!');
-}
+// function onFetchError(error) {
+//   alert('Упс, что-то пошло не так и мы не нашли вашего покемона!');
+// }
 
 // // =========================================
 
